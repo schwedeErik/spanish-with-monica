@@ -21,14 +21,31 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://schwedeerik.github.io/spanish-with-monica"),
   title: "Spanish with Monica | Learn Spanish Online · A1–C2",
   description:
-    "Personalized 1-on-1 Spanish lessons with Monica. CEFR-aligned courses from A1 to C2 for English speakers who want clear progress and real conversation.",
+    "1-on-1 Spanish classes with Monica. Official CEFR levels from A1 to C2—clear progress, real conversation, and lessons that stick.",
   openGraph: {
-    title: "Spanish with Monica | Learn Spanish at Official Levels",
+    title: "Spanish with Monica | Online Spanish Classes A1–C2",
     description:
-      "Book a trial class and start learning Spanish with a structured path from A1 to C2.",
+      "Book a trial lesson and learn Spanish with structured CEFR levels—from beginner A1 to advanced C2.",
     type: "website",
+    url: "https://schwedeerik.github.io/spanish-with-monica/",
+    images: [
+      {
+        url: "https://schwedeerik.github.io/spanish-with-monica/og.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Spanish with Monica — Learn Spanish A1 to C2",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Spanish with Monica | Online Spanish Classes A1–C2",
+    description:
+      "Book a trial lesson and learn Spanish with structured CEFR levels—from beginner A1 to advanced C2.",
+    images: ["https://schwedeerik.github.io/spanish-with-monica/og.jpg"],
   },
 };
 
