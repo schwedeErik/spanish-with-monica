@@ -220,7 +220,7 @@ function PracticeGame() {
   if (finished) {
     return (
       <div className="glass rounded-3xl p-6 sm:p-10">
-        <SectionLabel>// Result</SectionLabel>
+        <SectionLabel>Result</SectionLabel>
         <h3 className="mt-4 font-[family-name:var(--font-display)] text-3xl font-bold tracking-tight text-white sm:text-4xl">
           You got {score}/{PRACTICE_QUESTIONS.length}
         </h3>
@@ -508,7 +508,7 @@ export default function Home() {
           <div className="mx-auto max-w-7xl">
             <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
               <div className="max-w-2xl">
-                <SectionLabel>// Book a lesson</SectionLabel>
+                <SectionLabel>Book a lesson</SectionLabel>
                 <h2 className="mt-5 font-[family-name:var(--font-display)] text-4xl font-bold tracking-tight text-white sm:text-5xl">
                   Pick a time. Start speaking.
                 </h2>
@@ -539,7 +539,7 @@ export default function Home() {
         <section id="about" className="scroll-mt-24 px-4 py-24 sm:px-8 sm:py-32">
           <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
             <div>
-              <SectionLabel>// About</SectionLabel>
+              <SectionLabel>About</SectionLabel>
               <h2 className="mt-5 font-[family-name:var(--font-display)] text-4xl font-bold tracking-tight text-white sm:text-5xl">
                 Structured Spanish.
                 <br />
@@ -577,7 +577,7 @@ export default function Home() {
 
         <section id="levels" className="scroll-mt-24 px-4 py-24 sm:px-8 sm:py-32">
           <div className="mx-auto max-w-7xl">
-            <SectionLabel>// Levels</SectionLabel>
+            <SectionLabel>Levels</SectionLabel>
             <h2 className="mt-5 max-w-2xl font-[family-name:var(--font-display)] text-4xl font-bold tracking-tight text-white sm:text-5xl">
               Official CEFR path. A1 to C2.
             </h2>
@@ -612,7 +612,7 @@ export default function Home() {
 
         <section id="practice" className="scroll-mt-24 px-4 py-24 sm:px-8 sm:py-32">
           <div className="mx-auto max-w-3xl">
-            <SectionLabel>// Practice</SectionLabel>
+            <SectionLabel>Practice</SectionLabel>
             <h2 className="mt-5 font-[family-name:var(--font-display)] text-4xl font-bold tracking-tight text-white sm:text-5xl">
               Try a few level-based questions.
             </h2>
@@ -628,7 +628,7 @@ export default function Home() {
 
         <section id="packages" className="scroll-mt-24 px-4 py-24 sm:px-8 sm:py-32">
           <div className="mx-auto max-w-7xl">
-            <SectionLabel>// Packages</SectionLabel>
+            <SectionLabel>Packages</SectionLabel>
             <h2 className="mt-5 max-w-2xl font-[family-name:var(--font-display)] text-4xl font-bold tracking-tight text-white sm:text-5xl">
               Simple pricing. Clear next steps.
             </h2>
@@ -696,7 +696,7 @@ export default function Home() {
 
         <section id="faq" className="scroll-mt-24 px-4 py-24 sm:px-8 sm:py-32">
           <div className="mx-auto max-w-3xl">
-            <SectionLabel>// FAQ</SectionLabel>
+            <SectionLabel>FAQ</SectionLabel>
             <h2 className="mt-5 font-[family-name:var(--font-display)] text-4xl font-bold tracking-tight text-white sm:text-5xl">
               Questions, answered.
             </h2>
