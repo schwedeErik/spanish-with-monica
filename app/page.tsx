@@ -442,7 +442,7 @@ export default function Home() {
             aria-hidden
           >
             <Image
-              src="/monica.png"
+              src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/monica.png`}
               alt=""
               fill
               priority
