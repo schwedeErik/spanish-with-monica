@@ -1,15 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --background: #07080c;
-  --foreground: #f4f4f5;
-  --foreground-secondary: #a1a1aa;
-  --foreground-muted: #71717a;
-  --surface: #111218;
-  --surface-2: #18181f;
-  --border: rgb(255 255 255 / 0.08);
-  --accent: #2dd4bf;
-  --accent-soft: rgb(45 212 191 / 0.14);
+  --background: #f6f2eb;
+  --foreground: #3d3832;
+  --foreground-secondary: #6f675e;
+  --foreground-muted: #90867a;
+  --surface: #fffaf4;
+  --surface-2: #efe8dc;
+  --border: rgb(90 74 58 / 0.12);
+  --accent: #5d7a66;
+  --accent-deep: #4a6552;
+  --accent-soft: #e4ebe4;
+  --blush: #e8cfc0;
 }
 
 @theme inline {
@@ -18,7 +20,6 @@
   --color-accent: var(--accent);
   --font-sans: var(--font-body);
   --font-display: var(--font-display);
-  --font-mono: var(--font-mono);
 }
 
 html {
@@ -32,14 +33,14 @@ body {
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--accent) 40%, transparent);
-  color: white;
+  background: color-mix(in srgb, var(--accent) 28%, white);
+  color: var(--foreground);
 }
 
 @keyframes fade-up {
   from {
     opacity: 0;
-    transform: translateY(1.25rem);
+    transform: translateY(1rem);
   }
   to {
     opacity: 1;
@@ -50,96 +51,64 @@ body {
 @keyframes float {
   0%,
   100% {
-    transform: translate(0, 0);
+    transform: translate(0, 0) scale(1);
   }
   50% {
-    transform: translate(12px, -18px);
+    transform: translate(10px, -14px) scale(1.03);
   }
 }
 
 @keyframes float-delayed {
   0%,
   100% {
-    transform: translate(0, 0);
+    transform: translate(0, 0) scale(1);
   }
   50% {
-    transform: translate(-16px, 14px);
-  }
-}
-
-@keyframes pulse-glow {
-  0%,
-  100% {
-    opacity: 1;
-    box-shadow: 0 0 0 0 rgb(45 212 191 / 0.55);
-  }
-  50% {
-    opacity: 0.7;
-    box-shadow: 0 0 0 6px rgb(45 212 191 / 0);
+    transform: translate(-12px, 10px) scale(1.04);
   }
 }
 
 .animate-fade-up {
-  animation: fade-up 0.75s ease-out both;
+  animation: fade-up 0.8s ease-out both;
 }
 
 .animate-fade-up-delay-1 {
-  animation: fade-up 0.75s ease-out 0.1s both;
+  animation: fade-up 0.8s ease-out 0.1s both;
 }
 
 .animate-fade-up-delay-2 {
-  animation: fade-up 0.75s ease-out 0.2s both;
+  animation: fade-up 0.8s ease-out 0.2s both;
 }
 
 .animate-fade-up-delay-3 {
-  animation: fade-up 0.75s ease-out 0.3s both;
+  animation: fade-up 0.8s ease-out 0.3s both;
 }
 
 .animate-float {
-  animation: float 14s ease-in-out infinite;
+  animation: float 16s ease-in-out infinite;
 }
 
 .animate-float-delayed {
-  animation: float-delayed 18s ease-in-out infinite;
+  animation: float-delayed 20s ease-in-out infinite;
 }
 
-.animate-pulse-glow {
-  animation: pulse-glow 2.4s ease-in-out infinite;
+.organic-wash {
+  background:
+    radial-gradient(ellipse 55% 45% at 88% 12%, rgb(232 207 192 / 0.55), transparent 60%),
+    radial-gradient(ellipse 45% 40% at 8% 78%, rgb(228 235 228 / 0.7), transparent 55%),
+    radial-gradient(ellipse 40% 35% at 70% 85%, rgb(214 224 214 / 0.45), transparent 50%),
+    linear-gradient(180deg, #f8f4ee 0%, #f6f2eb 55%, #f3efe7 100%);
 }
 
-.noise {
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
-}
-
-.dot-grid {
-  background-image: radial-gradient(rgb(255 255 255 / 0.045) 1px, transparent 1px);
-  background-size: 28px 28px;
-}
-
-.glass {
-  background: rgb(255 255 255 / 0.04);
-  border: 1px solid rgb(255 255 255 / 0.08);
-  backdrop-filter: blur(16px);
+.soft-card {
+  background: color-mix(in srgb, var(--surface) 92%, white);
+  border: 1px solid var(--border);
+  box-shadow: 0 18px 40px -28px rgb(61 56 50 / 0.28);
 }
 
 .gradient-text {
-  background: linear-gradient(120deg, #f4f4f5 10%, #2dd4bf 55%, #67e8f9 100%);
+  background: linear-gradient(120deg, #4a6552 10%, #7a9a84 55%, #c4785a 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-}
-
-.glow-line::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -4px;
-  height: 1px;
-  width: 0;
-  background: var(--accent);
-  transition: width 0.3s ease;
-}
-
-.glow-line:hover::after {
-  width: 100%;
 }
