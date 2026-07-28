@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
 import {
   ArrowRight,
@@ -423,22 +422,6 @@ export default function Home() {
 
       <main id="top" className="flex-1">
         <section className="relative overflow-hidden px-4 pb-16 pt-28 sm:px-8 sm:pb-20 sm:pt-32">
-          <div
-            className="pointer-events-none absolute inset-y-0 right-0 w-[90%] max-w-3xl sm:w-[70%] lg:w-[55%]"
-            aria-hidden
-          >
-            <Image
-              src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/monica.png`}
-              alt=""
-              fill
-              priority
-              sizes="(max-width: 1024px) 85vw, 40rem"
-              className="object-cover object-[center_12%] opacity-35 saturate-[0.85] contrast-[1.02] sm:opacity-45 lg:opacity-50"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#f6f2eb] via-[#f6f2eb]/80 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#f6f2eb] via-transparent to-[#f6f2eb]/55" />
-          </div>
-
           <div className="relative mx-auto w-full max-w-7xl">
             <h1 className="animate-fade-up max-w-4xl font-[family-name:var(--font-display)] text-5xl font-semibold leading-[1.05] tracking-tight text-foreground sm:text-7xl lg:text-[5rem]">
               Learn Spanish
