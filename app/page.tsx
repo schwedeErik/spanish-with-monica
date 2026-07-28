@@ -26,13 +26,22 @@ const NAV_LINKS = [
   { href: "#faq", label: "FAQ" },
 ] as const;
 
-const PRACTICE_QUESTIONS = [
+type PracticeOption = { text: string; correct: boolean };
+
+const PRACTICE_QUESTIONS: {
+  level: string;
+  prompt: string;
+  options: PracticeOption[];
+  tip: string;
+}[] = [
   {
     level: "A1",
     prompt: "How do you say “My name is Ana” in Spanish?",
     options: [
       { text: "Me llamo Ana", correct: true },
       { text: "Yo es Ana", correct: false },
+      { text: "Mi nombre soy Ana", correct: false },
+      { text: "Yo llamo Ana", correct: false },
     ],
     tip: "Me llamo… is the standard A1 way to introduce yourself.",
   },
@@ -42,6 +51,8 @@ const PRACTICE_QUESTIONS = [
     options: [
       { text: "Estoy cansado hoy", correct: true },
       { text: "Soy cansado hoy", correct: false },
+      { text: "Estoy profesor hoy", correct: false },
+      { text: "Soy en casa ahora", correct: false },
     ],
     tip: "Temporary states like tiredness use estar. Ser is for lasting identity.",
   },
@@ -51,6 +62,8 @@ const PRACTICE_QUESTIONS = [
     options: [
       { text: "Ayer fui a la tienda", correct: true },
       { text: "Ayer voy a la tienda", correct: false },
+      { text: "Ayer iba a la tienda ahora", correct: false },
+      { text: "Ayer iré a la tienda", correct: false },
     ],
     tip: "Fui is the preterite of ir—right for a finished past action.",
   },
@@ -60,6 +73,8 @@ const PRACTICE_QUESTIONS = [
     options: [
       { text: "¿Podrías ayudarme, por favor?", correct: true },
       { text: "Ayúdame ahora mismo", correct: false },
+      { text: "Tú ayudas a mí", correct: false },
+      { text: "Quiero que ayudas", correct: false },
     ],
     tip: "Conditional forms like podrías sound more polite and natural at B1.",
   },
@@ -69,10 +84,21 @@ const PRACTICE_QUESTIONS = [
     options: [
       { text: "Cuando era niño, jugaba al fútbol", correct: true },
       { text: "Cuando era niño, jugué al fútbol siempre", correct: false },
+      { text: "Cuando era niño, juego al fútbol", correct: false },
+      { text: "Cuando era niño, he jugado al fútbol cada día", correct: false },
     ],
     tip: "The imperfect (jugaba) describes habits and ongoing past situations.",
   },
-] as const;
+];
+
+function shuffleOptions(options: PracticeOption[]): PracticeOption[] {
+  const copy = [...options];
+  for (let i = copy.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
 
 const CEFR_LEVELS = [
   {
@@ -117,6 +143,8 @@ const PACKAGES = [
       "Instant feedback & correction",
     ],
     highlighted: false,
+    cta: "Book your lesson",
+    ctaNote: "",
   },
   {
     name: "5-Lesson Pack",
@@ -131,6 +159,8 @@ const PACKAGES = [
       "Materials matched to your CEFR goals",
     ],
     highlighted: true,
+    cta: "Book pack & choose 5 slots",
+    ctaNote: "",
   },
 ] as const;
 
@@ -138,22 +168,22 @@ const FAQ_ITEMS = [
   {
     question: "What Spanish levels do you teach?",
     answer:
-      "Monica teaches standard Spanish across the official CEFR levels A1 through B2. Your first lesson includes a light placement conversation so classes match where you are—and where you want to go.",
+      "A1 through B2. Your first lesson includes a quick placement chat so we start at the right level.",
   },
   {
-    question: "How do I join our online classes?",
+    question: "How do I join online classes?",
     answer:
-      "When you book, the calendar automatically syncs with Google Calendar and generates a Google Meet link for your session. You’ll get the invite by email—just click the Meet link at class time. No extra software to install.",
+      "Booking syncs to Google Calendar with a Google Meet link. Just click the Meet link at class time.",
   },
   {
-    question: "What is your cancellation/rescheduling policy?",
+    question: "How does payment work?",
     answer:
-      "Life happens. Please reschedule or cancel at least 12 hours before your lesson so Monica can free the slot for another student. Late cancellations may forfeit the session. Bundles remain flexible as long as you give that advance notice.",
+      "Nothing is charged online. After you book, Monica confirms on WhatsApp—payment is by transfer or in person.",
   },
   {
-    question: "Do I need to buy textbooks?",
+    question: "What is the cancellation policy?",
     answer:
-      "Nope. Monica shares digital materials and practice prompts matched to your level. If you’re preparing for an official exam or already use a coursebook, we can align lessons with that too.",
+      "Please reschedule or cancel at least 12 hours ahead. Late cancellations may forfeit the session.",
   },
 ] as const;
 
@@ -170,6 +200,9 @@ function PracticeGame() {
   const [score, setScore] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [finished, setFinished] = useState(false);
+  const [shuffledOptions, setShuffledOptions] = useState(() =>
+    shuffleOptions(PRACTICE_QUESTIONS[0].options),
+  );
 
   const question = PRACTICE_QUESTIONS[index];
   const answered = selected !== null;
@@ -179,7 +212,7 @@ function PracticeGame() {
   function choose(optionIndex: number) {
     if (answered) return;
     setSelected(optionIndex);
-    if (question.options[optionIndex].correct) {
+    if (shuffledOptions[optionIndex].correct) {
       setScore((s) => s + 1);
     }
   }
@@ -189,7 +222,9 @@ function PracticeGame() {
       setFinished(true);
       return;
     }
-    setIndex((i) => i + 1);
+    const nextIndex = index + 1;
+    setIndex(nextIndex);
+    setShuffledOptions(shuffleOptions(PRACTICE_QUESTIONS[nextIndex].options));
     setSelected(null);
   }
 
@@ -198,6 +233,7 @@ function PracticeGame() {
     setScore(0);
     setSelected(null);
     setFinished(false);
+    setShuffledOptions(shuffleOptions(PRACTICE_QUESTIONS[0].options));
   }
 
   if (finished) {
@@ -256,14 +292,14 @@ function PracticeGame() {
       </h3>
 
       <div className="mt-6 grid gap-3">
-        {question.options.map((option, optionIndex) => {
+        {shuffledOptions.map((option, optionIndex) => {
           const isSelected = selected === optionIndex;
           const showCorrect = answered && option.correct;
           const showWrong = answered && isSelected && !option.correct;
 
           return (
             <button
-              key={option.text}
+              key={`${question.prompt}-${option.text}`}
               type="button"
               onClick={() => choose(optionIndex)}
               disabled={answered}
@@ -468,40 +504,33 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="booking" className="scroll-mt-24 px-4 pb-24 sm:px-8 sm:pb-32">
-          <div className="mx-auto max-w-7xl">
-            <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-              <div className="max-w-2xl">
-                <SectionLabel>Book a lesson</SectionLabel>
-                <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
-                  Pick a time. Start speaking.
-                </h2>
-                <p className="mt-5 text-lg text-[var(--foreground-secondary)]">
-                  Choose a slot in the calendar. Confirmations sync to Google Calendar and
-                  include a Google Meet link—no extra setup.
-                </p>
-              </div>
-              <div className="soft-card flex flex-wrap gap-4 rounded-2xl px-5 py-4 text-sm text-[var(--foreground-secondary)]">
-                <span className="font-semibold text-accent">From $300 MXN</span>
-                <span className="text-[var(--foreground-muted)]">·</span>
-                <span>60-min lessons</span>
-                <span className="text-[var(--foreground-muted)]">·</span>
-                <span>Google Meet included</span>
-              </div>
-            </div>
+        <section id="booking" className="scroll-mt-24 px-4 pb-28 sm:px-8 sm:pb-32">
+          <div className="mx-auto max-w-4xl">
+            <SectionLabel>Book a lesson</SectionLabel>
+            <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
+              Pick a time. Start speaking.
+            </h2>
+            <p className="mt-5 max-w-2xl text-lg text-[var(--foreground-secondary)]">
+              Choose a slot below. You’ll get a Google Calendar invite and Google Meet
+              link automatically.
+            </p>
+            <p className="mt-4 max-w-2xl rounded-2xl border border-[var(--border)] bg-white/60 px-4 py-3 text-sm leading-relaxed text-[var(--foreground-secondary)]">
+              After you book, Monica will confirm on WhatsApp. Payment is by transfer or
+              in person—nothing is charged online.
+            </p>
 
-            <div className="soft-card mx-auto mt-10 max-w-4xl overflow-hidden rounded-[2rem] p-2 sm:p-4">
+            <div className="soft-card mt-10 overflow-hidden rounded-[2rem] p-2 sm:p-4">
               <iframe
                 title="Book a Spanish lesson with Monica"
                 src="https://cal.com/monica-ramirez-l3dppw/spanish-lessons"
-                className="h-[700px] w-full rounded-[1.5rem] border-0 bg-white"
+                className="h-[520px] w-full rounded-[1.5rem] border-0 bg-white sm:h-[700px]"
               />
             </div>
           </div>
         </section>
 
-        <section id="about" className="scroll-mt-24 px-4 py-24 sm:px-8 sm:py-32">
-          <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
+        <section id="about" className="scroll-mt-24 px-4 py-16 sm:px-8 sm:py-24">
+          <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
             <div>
               <SectionLabel>About</SectionLabel>
               <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
@@ -512,21 +541,16 @@ export default function Home() {
             </div>
             <div>
               <p className="text-lg leading-relaxed text-[var(--foreground-secondary)]">
-                ¡Hola! I&apos;m Monica, a native Spanish speaker who helps English learners
-                move confidently through the official CEFR levels—from first words at A1
-                to upper-intermediate fluency at B2.
-              </p>
-              <p className="mt-5 text-lg leading-relaxed text-[var(--foreground-secondary)]">
-                Every lesson balances speaking practice with the grammar and vocabulary
-                expected at your level, so you always know what you&apos;re working toward
-                and why it matters.
+                ¡Hola! I&apos;m Monica. I help English speakers move from A1 to B2 with
+                conversation-first lessons—grammar when you need it, always tied to real
+                speaking goals.
               </p>
 
-              <ul className="mt-12 grid gap-6 sm:grid-cols-3">
+              <ul className="mt-8 grid gap-4 sm:grid-cols-3">
                 {[
-                  { icon: MessageCircle, title: "Speak first", body: "Active conversation from minute one" },
-                  { icon: BookOpen, title: "Level-aligned", body: "Lessons mapped to A1–B2 goals" },
-                  { icon: Sparkles, title: "Clear progress", body: "Know exactly what “next level” means" },
+                  { icon: MessageCircle, title: "Speak first", body: "Real dialogue from minute one" },
+                  { icon: BookOpen, title: "Level-aligned", body: "Mapped to A1–B2 goals" },
+                  { icon: Sparkles, title: "Clear progress", body: "You always know what’s next" },
                 ].map(({ icon: Icon, title, body }) => (
                   <li key={title} className="rounded-3xl border border-[var(--border)] bg-white/50 p-5">
                     <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[var(--accent-soft)] text-accent">
@@ -675,28 +699,48 @@ export default function Home() {
                         : "bg-accent text-white hover:bg-[var(--accent-deep)]"
                     }`}
                   >
-                    Book your lesson
+                    {pkg.cta}
                   </a>
+                  {pkg.ctaNote && (
+                    <p
+                      className={`mt-3 text-center text-xs leading-relaxed ${
+                        pkg.highlighted ? "text-white/70" : "text-[var(--foreground-muted)]"
+                      }`}
+                    >
+                      {pkg.ctaNote}
+                    </p>
+                  )}
                 </article>
               ))}
             </div>
           </div>
         </section>
 
-        <section id="faq" className="scroll-mt-24 px-4 py-24 sm:px-8 sm:py-32">
+        <section id="faq" className="scroll-mt-24 px-4 py-16 sm:px-8 sm:py-24">
           <div className="mx-auto max-w-3xl">
             <SectionLabel>FAQ</SectionLabel>
             <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
-              Questions, answered.
+              Quick answers.
             </h2>
-            <div className="mt-12">
+            <div className="mt-10">
               <FaqAccordion />
             </div>
           </div>
         </section>
       </main>
 
-      <footer className="border-t border-[var(--border)] px-4 py-14 sm:px-8">
+      {/* Sticky mobile booking bar */}
+      <div className="fixed inset-x-0 bottom-0 z-50 border-t border-[var(--border)] bg-background/95 px-4 py-3 backdrop-blur-md md:hidden">
+        <a
+          href="#booking"
+          className="flex w-full items-center justify-center gap-2 rounded-full bg-accent px-5 py-3.5 text-sm font-semibold text-white shadow-sm"
+        >
+          Book your lesson
+          <ArrowRight className="h-4 w-4" aria-hidden />
+        </a>
+      </div>
+
+      <footer className="border-t border-[var(--border)] px-4 py-14 pb-28 sm:px-8 md:pb-14">
         <div className="mx-auto flex max-w-7xl flex-col gap-10 lg:flex-row lg:justify-between">
           <div>
             <p className="font-[family-name:var(--font-display)] text-xl font-semibold text-foreground">
