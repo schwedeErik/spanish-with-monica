@@ -1,27 +1,33 @@
 import type { Metadata } from "next";
-import { Fraunces, Plus_Jakarta_Sans } from "next/font/google";
+import { JetBrains_Mono, Outfit, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 
-const display = Fraunces({
+const display = Space_Grotesk({
   variable: "--font-display",
   subsets: ["latin"],
   display: "swap",
 });
 
-const body = Plus_Jakarta_Sans({
+const body = Outfit({
   variable: "--font-body",
   subsets: ["latin"],
   display: "swap",
 });
 
+const mono = JetBrains_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  title: "Spanish with Monica | Learn Real Mexican Spanish Online",
+  title: "Spanish with Monica | Learn Spanish Online · A1–C2",
   description:
-    "Personalized 1-on-1 Mexican Spanish lessons with Monica, a native tutor from Mexico. Practical conversation, culture, and fluency for English speakers.",
+    "Personalized 1-on-1 Spanish lessons with Monica. CEFR-aligned courses from A1 to C2 for English speakers who want clear progress and real conversation.",
   openGraph: {
-    title: "Spanish with Monica | Master Real Mexican Spanish",
+    title: "Spanish with Monica | Learn Spanish at Official Levels",
     description:
-      "Book a trial class and start speaking authentic Mexican Spanish with a native tutor.",
+      "Book a trial class and start learning Spanish with a structured path from A1 to C2.",
     type: "website",
   },
 };
@@ -32,8 +38,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col font-sans text-stone-900">{children}</body>
+    <html
+      lang="en"
+      className={`${display.variable} ${body.variable} ${mono.variable} h-full scroll-smooth antialiased`}
+    >
+      <body className="min-h-full flex flex-col bg-background font-sans text-foreground">
+        {children}
+      </body>
     </html>
   );
 }

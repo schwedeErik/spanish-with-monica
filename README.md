@@ -1,6 +1,6 @@
 # Spanish with Monica
 
-Conversion-focused landing page for Monica’s online Mexican Spanish lessons.
+Conversion-focused landing page for Monica’s online Spanish lessons (CEFR A1–C2).
 
 Built with Next.js (App Router), TypeScript, Tailwind CSS, and a Cal.com booking embed.
 
