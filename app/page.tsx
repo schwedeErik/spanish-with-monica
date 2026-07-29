@@ -433,45 +433,47 @@ export default function Home() {
       </div>
 
       <header className="fixed top-0 z-50 w-full px-4 pt-4 sm:px-8 sm:pt-5">
-        <div className="soft-card mx-auto flex h-14 max-w-7xl items-center justify-between rounded-full px-4 sm:px-5">
+        <div className="soft-card mx-auto flex h-14 max-w-7xl items-center justify-between gap-3 overflow-hidden rounded-full px-4 sm:px-5">
           <a
             href="#top"
-            className="font-[family-name:var(--font-display)] text-sm font-semibold tracking-tight text-foreground sm:text-base"
+            className="min-w-0 shrink truncate font-[family-name:var(--font-display)] text-sm font-semibold tracking-tight text-foreground sm:text-base"
           >
             Spanish with <span className="text-accent">Monica</span>
           </a>
 
-          <nav className="hidden items-center gap-7 md:flex" aria-label="Primary">
+          <nav className="hidden items-center gap-5 lg:flex xl:gap-7" aria-label="Primary">
             {NAV_LINKS.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium text-[var(--foreground-secondary)] transition-colors hover:text-accent"
+                className="whitespace-nowrap text-sm font-medium text-[var(--foreground-secondary)] transition-colors hover:text-accent"
               >
                 {link.label}
               </a>
             ))}
             <a
               href="#booking"
-              className="inline-flex items-center justify-center rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:bg-[var(--accent-deep)]"
+              className="inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition hover:bg-[var(--accent-deep)]"
             >
               Book your lesson
             </a>
           </nav>
 
-          <button
-            type="button"
-            className="inline-flex items-center justify-center rounded-full p-2 text-foreground md:hidden"
-            aria-label={mobileOpen ? "Close menu" : "Open menu"}
-            aria-expanded={mobileOpen}
-            onClick={() => setMobileOpen((v) => !v)}
-          >
-            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
+          <div className="flex shrink-0 items-center gap-2 lg:hidden">
+            <button
+              type="button"
+              className="inline-flex items-center justify-center rounded-full p-2 text-foreground"
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileOpen}
+              onClick={() => setMobileOpen((v) => !v)}
+            >
+              {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </div>
         </div>
 
         {mobileOpen && (
-          <div className="soft-card mx-auto mt-2 max-w-7xl rounded-[1.75rem] px-4 py-4 md:hidden">
+          <div className="soft-card mx-auto mt-2 max-w-7xl rounded-[1.75rem] px-4 py-4 lg:hidden">
             <nav className="flex flex-col gap-1" aria-label="Mobile">
               {NAV_LINKS.map((link) => (
                 <a
