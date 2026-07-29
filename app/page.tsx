@@ -209,6 +209,8 @@ function CalBooking() {
       cal("ui", {
         hideEventTypeDetails: true,
         layout: "month_view",
+        theme: "light",
+        colorScheme: "light",
       });
     })();
   }, []);
@@ -219,6 +221,8 @@ function CalBooking() {
       style={{ width: "100%", height: "100%", overflow: "visible" }}
       config={{
         layout: "month_view",
+        theme: "light",
+        "ui.color-scheme": "light",
         useSlotsViewOnSmallScreen: "true",
       }}
     />
@@ -540,7 +544,7 @@ export default function Home() {
         </section>
 
         <section id="booking" className="scroll-mt-24 px-4 pb-28 sm:px-8 sm:pb-32">
-          <div className="mx-auto max-w-4xl">
+          <div className="mx-auto max-w-5xl">
             <SectionLabel>Book a lesson</SectionLabel>
             <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
               Pick a time. Start speaking.
@@ -554,8 +558,8 @@ export default function Home() {
               in person—nothing is charged online.
             </p>
 
-            <div className="soft-card mt-10 overflow-hidden rounded-[2rem] p-2 sm:p-4">
-              <div className="min-h-[480px] w-full overflow-visible rounded-[1.5rem] bg-white">
+            <div className="soft-card mt-10 overflow-hidden rounded-[2rem] p-2 sm:p-3">
+              <div className="w-full overflow-visible rounded-[1.5rem] bg-white">
                 <CalBooking />
               </div>
             </div>
