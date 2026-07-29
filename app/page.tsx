@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Cal, { getCalApi } from "@calcom/embed-react";
 import {
   ArrowRight,
   BookOpen,
@@ -11,6 +12,7 @@ import {
   Mail,
   Menu,
   MessageCircle,
+  Phone,
   RotateCcw,
   Sparkles,
   Users,
@@ -121,10 +123,15 @@ const CEFR_LEVELS = [
     name: "Upper Intermediate",
     body: "Speak with more fluency, argue a point, and follow complex conversations.",
   },
+  {
+    code: "C1",
+    name: "Advanced",
+    body: "Discuss nuanced topics, use precise vocabulary, and sound natural in demanding situations.",
+  },
 ] as const;
 
 const TRUST_BADGES = [
-  { icon: BookOpen, label: "CEFR Levels A1–B2" },
+  { icon: BookOpen, label: "CEFR Levels A1–C1" },
   { icon: Users, label: "1-on-1 Personalized" },
   { icon: CalendarCheck, label: "Instant Calendar Booking" },
 ] as const;
@@ -168,7 +175,7 @@ const FAQ_ITEMS = [
   {
     question: "What Spanish levels do you teach?",
     answer:
-      "A1 through B2. Your first lesson includes a quick placement chat so we start at the right level.",
+      "A1 through C1. Your first lesson includes a quick placement chat so we start at the right level.",
   },
   {
     question: "How do I join online classes?",
@@ -195,14 +202,41 @@ function SectionLabel({ children }: { children: string }) {
   );
 }
 
+function CalBooking() {
+  useEffect(() => {
+    void (async () => {
+      const cal = await getCalApi();
+      cal("ui", {
+        hideEventTypeDetails: false,
+        layout: "month_view",
+      });
+    })();
+  }, []);
+
+  return (
+    <Cal
+      calLink="monica-ramirez-l3dppw/spanish-lessons"
+      style={{ width: "100%", height: "100%", overflow: "visible" }}
+      config={{
+        layout: "month_view",
+      }}
+    />
+  );
+}
+
 function PracticeGame() {
   const [index, setIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [finished, setFinished] = useState(false);
-  const [shuffledOptions, setShuffledOptions] = useState(() =>
-    shuffleOptions(PRACTICE_QUESTIONS[0].options),
+  // Stable initial order for SSR; shuffle after mount to avoid hydration mismatch
+  const [shuffledOptions, setShuffledOptions] = useState(
+    () => PRACTICE_QUESTIONS[0].options,
   );
+
+  useEffect(() => {
+    setShuffledOptions(shuffleOptions(PRACTICE_QUESTIONS[0].options));
+  }, []);
 
   const question = PRACTICE_QUESTIONS[index];
   const answered = selected !== null;
@@ -520,11 +554,9 @@ export default function Home() {
             </p>
 
             <div className="soft-card mt-10 overflow-hidden rounded-[2rem] p-2 sm:p-4">
-              <iframe
-                title="Book a Spanish lesson with Monica"
-                src="https://cal.com/monica-ramirez-l3dppw/spanish-lessons"
-                className="h-[520px] w-full rounded-[1.5rem] border-0 bg-white sm:h-[700px]"
-              />
+              <div className="min-h-[480px] w-full overflow-visible rounded-[1.5rem] bg-white">
+                <CalBooking />
+              </div>
             </div>
           </div>
         </section>
@@ -541,7 +573,7 @@ export default function Home() {
             </div>
             <div>
               <p className="text-lg leading-relaxed text-[var(--foreground-secondary)]">
-                ¡Hola! I&apos;m Monica. I help English speakers move from A1 to B2 with
+                ¡Hola! I&apos;m Monica. I help English speakers move from A1 to C1 with
                 conversation-first lessons—grammar when you need it, always tied to real
                 speaking goals.
               </p>
@@ -549,7 +581,7 @@ export default function Home() {
               <ul className="mt-8 grid gap-4 sm:grid-cols-3">
                 {[
                   { icon: MessageCircle, title: "Speak first", body: "Real dialogue from minute one" },
-                  { icon: BookOpen, title: "Level-aligned", body: "Mapped to A1–B2 goals" },
+                  { icon: BookOpen, title: "Level-aligned", body: "Mapped to A1–C1 goals" },
                   { icon: Sparkles, title: "Clear progress", body: "You always know what’s next" },
                 ].map(({ icon: Icon, title, body }) => (
                   <li key={title} className="rounded-3xl border border-[var(--border)] bg-white/50 p-5">
@@ -569,14 +601,15 @@ export default function Home() {
           <div className="mx-auto max-w-7xl">
             <SectionLabel>Levels</SectionLabel>
             <h2 className="mt-4 max-w-2xl font-[family-name:var(--font-display)] text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
-              Official CEFR path. A1 to B2.
+              Official CEFR path. A1 to C1.
             </h2>
             <p className="mt-5 max-w-2xl text-lg text-[var(--foreground-secondary)]">
-              The same scale used by schools, employers, and official exams worldwide—
+              CEFR stands for the Common European Framework of Reference for Languages—
+              the same scale used by schools, employers, and official exams worldwide,
               turned into practical 1-on-1 lessons.
             </p>
 
-            <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
               {CEFR_LEVELS.map((level) => (
                 <div
                   key={level.code}
@@ -747,16 +780,25 @@ export default function Home() {
               Spanish with <span className="text-accent">Monica</span>
             </p>
             <p className="mt-3 max-w-sm text-sm leading-relaxed text-[var(--foreground-muted)]">
-              Standard Spanish for English speakers—structured by CEFR levels A1–B2, with
+              Standard Spanish for English speakers—structured by CEFR levels A1–C1, with
               real conversation at the center.
             </p>
-            <a
-              href="mailto:hola@spanishwithmonica.com"
-              className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-[var(--foreground-secondary)] transition hover:text-accent"
-            >
-              <Mail className="h-4 w-4" aria-hidden />
-              hola@spanishwithmonica.com
-            </a>
+            <div className="mt-5 flex flex-col gap-3">
+              <a
+                href="mailto:hola@spanishwithmonica.com"
+                className="inline-flex items-center gap-2 text-sm font-medium text-[var(--foreground-secondary)] transition hover:text-accent"
+              >
+                <Mail className="h-4 w-4" aria-hidden />
+                psi.monicaramirezp@gmail.com
+              </a>
+              <a
+                href="tel:+529511451717"
+                className="inline-flex items-center gap-2 text-sm font-medium text-[var(--foreground-secondary)] transition hover:text-accent"
+              >
+                <Phone className="h-4 w-4" aria-hidden />
+                +52 951 145 1717
+              </a>
+            </div>
           </div>
 
           <div>
