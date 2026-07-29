@@ -202,10 +202,17 @@ function SectionLabel({ children }: { children: string }) {
   );
 }
 
+const CAL_LINK = "monica-ramirez-l3dppw/spanish-lessons";
+const CAL_EMBED_JS = "https://app.cal.com/embed/embed.js";
+const CAL_NAMESPACE = "spanish-lessons";
+
 function CalBooking() {
   useEffect(() => {
     void (async () => {
-      const cal = await getCalApi();
+      const cal = await getCalApi({
+        namespace: CAL_NAMESPACE,
+        embedJsUrl: CAL_EMBED_JS,
+      });
       cal("ui", {
         hideEventTypeDetails: true,
         layout: "month_view",
@@ -217,12 +224,15 @@ function CalBooking() {
 
   return (
     <Cal
-      calLink="monica-ramirez-l3dppw/spanish-lessons"
-      style={{ width: "100%", height: "100%", overflow: "visible" }}
+      namespace={CAL_NAMESPACE}
+      embedJsUrl={CAL_EMBED_JS}
+      calLink={CAL_LINK}
+      style={{ width: "100%", overflow: "visible" }}
       config={{
         layout: "month_view",
         theme: "light",
         "ui.color-scheme": "light",
+        // Opens times in a sheet/modal on small screens instead of a nested scrollbar
         useSlotsViewOnSmallScreen: "true",
       }}
     />
@@ -441,7 +451,7 @@ export default function Home() {
             Spanish with <span className="text-accent">Monica</span>
           </a>
 
-          <nav className="hidden items-center gap-5 lg:flex xl:gap-7" aria-label="Primary">
+          <nav className="hidden items-center gap-3 md:flex lg:gap-5 xl:gap-7" aria-label="Primary">
             {NAV_LINKS.map((link) => (
               <a
                 key={link.href}
@@ -459,7 +469,7 @@ export default function Home() {
             </a>
           </nav>
 
-          <div className="flex shrink-0 items-center gap-2 lg:hidden">
+          <div className="flex shrink-0 items-center gap-2 md:hidden">
             <button
               type="button"
               className="inline-flex items-center justify-center rounded-full p-2 text-foreground"
@@ -473,7 +483,7 @@ export default function Home() {
         </div>
 
         {mobileOpen && (
-          <div className="soft-card mx-auto mt-2 max-w-7xl rounded-[1.75rem] px-4 py-4 lg:hidden">
+          <div className="soft-card mx-auto mt-2 max-w-7xl rounded-[1.75rem] px-4 py-4 md:hidden">
             <nav className="flex flex-col gap-1" aria-label="Mobile">
               {NAV_LINKS.map((link) => (
                 <a
@@ -560,7 +570,7 @@ export default function Home() {
               in person—nothing is charged online.
             </p>
 
-            <div className="soft-card mt-10 overflow-hidden rounded-[2rem] p-2 sm:p-3">
+            <div className="soft-card mt-10 overflow-visible rounded-[2rem] p-2 sm:p-3">
               <div className="w-full overflow-visible rounded-[1.5rem] bg-white">
                 <CalBooking />
               </div>
