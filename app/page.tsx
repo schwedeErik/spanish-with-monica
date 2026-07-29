@@ -207,7 +207,7 @@ function CalBooking() {
     void (async () => {
       const cal = await getCalApi();
       cal("ui", {
-        hideEventTypeDetails: false,
+        hideEventTypeDetails: true,
         layout: "month_view",
       });
     })();
@@ -219,6 +219,7 @@ function CalBooking() {
       style={{ width: "100%", height: "100%", overflow: "visible" }}
       config={{
         layout: "month_view",
+        useSlotsViewOnSmallScreen: "true",
       }}
     />
   );
