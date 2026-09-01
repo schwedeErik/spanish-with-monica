@@ -487,7 +487,7 @@ export default function Home() {
             href="#top"
             className="min-w-0 shrink truncate font-[family-name:var(--font-display)] text-sm font-semibold tracking-tight text-foreground sm:text-base"
           >
-            Spanish with <span className="text-accent">Monica</span>
+            Spanish with <span className="text-accent">Mónica</span>
           </a>
 
           <nav className="hidden items-center gap-3 md:flex lg:gap-5 xl:gap-7" aria-label="Primary">
@@ -565,7 +565,7 @@ export default function Home() {
           <div className="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-7xl flex-col justify-end px-4 pb-16 pt-28 sm:justify-center sm:px-8 sm:pb-24 sm:pt-32">
             <div className="max-w-xl">
               <p className="animate-fade-up font-[family-name:var(--font-display)] text-3xl font-semibold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-                Spanish with <span className="text-accent">Monica</span>
+                Spanish with <span className="text-accent">Mónica</span>
               </p>
               <h1 className="animate-fade-up-delay-1 mt-4 font-[family-name:var(--font-display)] text-4xl font-semibold leading-[1.08] tracking-tight text-foreground sm:text-5xl lg:text-6xl">
                 Learn Spanish.{" "}
@@ -906,7 +906,7 @@ export default function Home() {
         <div className="mx-auto flex max-w-7xl flex-col gap-10 lg:flex-row lg:justify-between">
           <div>
             <p className="font-[family-name:var(--font-display)] text-xl font-semibold text-foreground">
-              Spanish with <span className="text-accent">Monica</span>
+              Spanish with <span className="text-accent">Mónica</span>
             </p>
             <p className="mt-3 max-w-sm text-sm leading-relaxed text-[var(--foreground-muted)]">
               Personalized Spanish with Mónica, psychologist, teacher, and lifelong learner.
@@ -957,7 +957,7 @@ export default function Home() {
           </div>
         </div>
         <p className="mx-auto mt-12 max-w-7xl text-xs text-[var(--foreground-muted)]">
-          © {new Date().getFullYear()} Spanish with Monica. All rights reserved.
+          © {new Date().getFullYear()} Spanish with Mónica. All rights reserved.
         </p>
       </footer>
     </div>

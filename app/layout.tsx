@@ -16,30 +16,30 @@ const body = Nunito_Sans({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://schwedeerik.github.io/spanish-with-monica"),
-  title: "Spanish with Monica | Learn Spanish. Live it.",
+  title: "Spanish with Mónica | Learn Spanish. Live it.",
   description:
     "¡Hola! I'm Mónica, psychologist and Spanish teacher. Personalized 1-on-1 lessons from A1 to C1 that feel natural, practical, and connected to real life.",
   openGraph: {
-    title: "Spanish with Monica | Learn Spanish. Live it.",
+    title: "Learn Spanish with Mónica",
     description:
       "Personalized Spanish with Mónica, psychologist, teacher, and lifelong learner. Book a lesson and start speaking with confidence.",
     type: "website",
     url: "https://schwedeerik.github.io/spanish-with-monica/",
     images: [
       {
-        url: "https://schwedeerik.github.io/spanish-with-monica/og.jpg?v=8",
+        url: "https://schwedeerik.github.io/spanish-with-monica/og.jpg?v=10",
         width: 1200,
         height: 630,
-        alt: "Spanish with Monica, Learn Spanish. Live it.",
+        alt: "Learn Spanish with Mónica",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Spanish with Monica | Learn Spanish. Live it.",
+    title: "Learn Spanish with Mónica",
     description:
       "Personalized Spanish with Mónica, psychologist, teacher, and lifelong learner. Book a lesson and start speaking with confidence.",
-    images: ["https://schwedeerik.github.io/spanish-with-monica/og.jpg?v=8"],
+    images: ["https://schwedeerik.github.io/spanish-with-monica/og.jpg?v=10"],
   },
 };
 
