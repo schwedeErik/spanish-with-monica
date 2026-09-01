@@ -16,30 +16,30 @@ const body = Nunito_Sans({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://schwedeerik.github.io/spanish-with-monica"),
-  title: "Spanish with Monica | Learn Spanish Online · A1–C1",
+  title: "Spanish with Monica | Learn Spanish. Live it.",
   description:
-    "1-on-1 Spanish classes with Monica. Official CEFR levels from A1 to C1—clear progress, real conversation, and lessons that stick.",
+    "¡Hola! I'm Mónica, psychologist and Spanish teacher. Personalized 1-on-1 lessons from A1 to C1 that feel natural, practical, and connected to real life.",
   openGraph: {
-    title: "Spanish with Monica | Online Spanish Classes A1–C1",
+    title: "Spanish with Monica | Learn Spanish. Live it.",
     description:
-      "Book a lesson and learn Spanish with structured CEFR levels—from beginner A1 to advanced C1.",
+      "Personalized Spanish with Mónica, psychologist, teacher, and lifelong learner. Book a lesson and start speaking with confidence.",
     type: "website",
     url: "https://schwedeerik.github.io/spanish-with-monica/",
     images: [
       {
-        url: "https://schwedeerik.github.io/spanish-with-monica/og.jpg?v=5",
+        url: "https://schwedeerik.github.io/spanish-with-monica/og.jpg?v=6",
         width: 1200,
         height: 630,
-        alt: "Spanish with Monica — Learn Spanish A1 to C1",
+        alt: "Spanish with Monica, Learn Spanish. Live it.",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Spanish with Monica | Online Spanish Classes A1–C1",
+    title: "Spanish with Monica | Learn Spanish. Live it.",
     description:
-      "Book a lesson and learn Spanish with structured CEFR levels—from beginner A1 to advanced C1.",
-    images: ["https://schwedeerik.github.io/spanish-with-monica/og.jpg?v=5"],
+      "Personalized Spanish with Mónica, psychologist, teacher, and lifelong learner. Book a lesson and start speaking with confidence.",
+    images: ["https://schwedeerik.github.io/spanish-with-monica/og.jpg?v=6"],
   },
 };
 

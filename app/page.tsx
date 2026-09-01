@@ -1,14 +1,16 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import Cal, { getCalApi } from "@calcom/embed-react";
 import {
   ArrowRight,
   BookOpen,
-  CalendarCheck,
   Check,
   ChevronDown,
   Clock,
+  GraduationCap,
+  Heart,
   Mail,
   Menu,
   MessageCircle,
@@ -19,9 +21,12 @@ import {
   X,
 } from "lucide-react";
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 const NAV_LINKS = [
   { href: "#booking", label: "Book" },
   { href: "#about", label: "About" },
+  { href: "#how", label: "Lessons" },
   { href: "#levels", label: "Levels" },
   { href: "#practice", label: "Practice" },
   { href: "#packages", label: "Packages" },
@@ -67,7 +72,7 @@ const PRACTICE_QUESTIONS: {
       { text: "Ayer iba a la tienda ahora", correct: false },
       { text: "Ayer iré a la tienda", correct: false },
     ],
-    tip: "Fui is the preterite of ir—right for a finished past action.",
+    tip: "Fui is the preterite of ir, right for a finished past action.",
   },
   {
     level: "B1",
@@ -131,19 +136,37 @@ const CEFR_LEVELS = [
 ] as const;
 
 const TRUST_BADGES = [
-  { icon: BookOpen, label: "CEFR Levels A1–C1" },
-  { icon: Users, label: "1-on-1 Personalized" },
-  { icon: CalendarCheck, label: "Instant Calendar Booking" },
+  { icon: GraduationCap, label: "Psychologist & Spanish teacher" },
+  { icon: Users, label: "1-on-1 personalized lessons" },
+  { icon: BookOpen, label: "CEFR levels A1–C1" },
+] as const;
+
+const LESSON_STEPS = [
+  {
+    step: "01",
+    title: "We place your level",
+    body: "Your first lesson starts with a light conversation so we know where you are and where you want to go.",
+  },
+  {
+    step: "02",
+    title: "We speak from minute one",
+    body: "Lessons feel natural and practical: real dialogue, grammar when you need it, always tied to everyday life.",
+  },
+  {
+    step: "03",
+    title: "You leave with a clear next step",
+    body: "I design each class around how you learn best, so you always know what to practice before we meet again.",
+  },
 ] as const;
 
 const PACKAGES = [
   {
     name: "Single Lesson",
     duration: "60 min",
-    price: "$350",
+    price: "$390",
     priceNote: "MXN per lesson",
     description:
-      "One private 1-on-1 Spanish lesson aligned to your CEFR level—speaking, listening, grammar, and vocabulary that move you forward.",
+      "One private 1-on-1 Spanish lesson aligned to your CEFR level: speaking, listening, grammar, and vocabulary that move you forward.",
     features: [
       "Level-based lesson plan",
       "Active speaking practice",
@@ -156,17 +179,33 @@ const PACKAGES = [
   {
     name: "5-Lesson Pack",
     duration: "5 × 60 min",
-    price: "$300",
-    priceNote: "MXN per lesson · $1,500 total",
+    price: "$350",
+    priceNote: "MXN per lesson · $1,750 total",
     description:
-      "Five private lessons at a lower per-lesson rate—ideal for steady progress through your current CEFR level.",
+      "Five private lessons at a lower per-lesson rate, ideal for steady progress through your current CEFR level.",
     features: [
-      "Save $50 per lesson vs single",
+      "Save $40 per lesson vs single",
+      "Progress tracking by level",
+      "Materials matched to your CEFR goals",
+    ],
+    highlighted: false,
+    cta: "Book pack & choose 5 slots",
+    ctaNote: "",
+  },
+  {
+    name: "10-Lesson Pack",
+    duration: "10 × 60 min",
+    price: "$300",
+    priceNote: "MXN per lesson · $3,000 total",
+    description:
+      "Ten private lessons at the best per-lesson rate, best for committed learners building real momentum.",
+    features: [
+      "Save $90 per lesson vs single",
       "Progress tracking by level",
       "Materials matched to your CEFR goals",
     ],
     highlighted: true,
-    cta: "Book pack & choose 5 slots",
+    cta: "Book pack & choose 10 slots",
     ctaNote: "",
   },
 ] as const;
@@ -175,22 +214,22 @@ const FAQ_ITEMS = [
   {
     question: "What Spanish levels do you teach?",
     answer:
-      "A1 through C1. Your first lesson includes a quick placement chat so we start at the right level.",
+      "A1 through C1. In our first lesson we’ll chat so I can place you at the right level and build from there.",
   },
   {
     question: "How do I join online classes?",
     answer:
-      "Booking syncs to Google Calendar with a Google Meet link. Just click the Meet link at class time.",
+      "When you book, you’ll get a Google Calendar invite with a Google Meet link. Just click the Meet link at class time. No extra software needed.",
   },
   {
     question: "How does payment work?",
     answer:
-      "Nothing is charged online. After you book, Monica confirms on WhatsApp—payment is by transfer or in person.",
+      "Nothing is charged online. After you book, I’ll confirm on WhatsApp. You can pay by transfer or in person.",
   },
   {
     question: "What is the cancellation policy?",
     answer:
-      "Please reschedule or cancel at least 12 hours ahead. Late cancellations may forfeit the session.",
+      "Life happens. Please reschedule or cancel at least 12 hours ahead so I can free the slot. Late cancellations may forfeit the session.",
   },
 ] as const;
 
@@ -294,10 +333,10 @@ function PracticeGame() {
         </h3>
         <p className="mt-4 max-w-xl text-base leading-relaxed text-[var(--foreground-secondary)] sm:text-lg">
           {score >= 4
-            ? "Strong start—Monica can help you turn this into steady progress through your CEFR level."
+            ? "Strong start. I can help you turn this into steady progress through your CEFR level."
             : score >= 2
               ? "Nice baseline. Live lessons will lock in grammar and speaking for your official level."
-              : "Totally normal starting point. A first lesson with Monica will show exactly where to begin."}
+              : "Totally normal starting point. A first lesson with me will show exactly where to begin."}
         </p>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <a
@@ -508,21 +547,35 @@ export default function Home() {
       </header>
 
       <main id="top" className="flex-1">
-        <section className="relative overflow-hidden px-4 pb-16 pt-28 sm:px-8 sm:pb-20 sm:pt-32">
-          <div className="relative mx-auto w-full max-w-7xl">
-            <h1 className="animate-fade-up max-w-4xl font-[family-name:var(--font-display)] text-5xl font-semibold leading-[1.05] tracking-tight text-foreground sm:text-7xl lg:text-[5rem]">
-              Learn Spanish
-              <br />
-              that <span className="gradient-text">actually sticks.</span>
-            </h1>
+        <section className="relative min-h-[100svh] overflow-hidden">
+          <Image
+            src={`${BASE_PATH}/monica.jpg`}
+            alt="Mónica on a mountain bridge, Spanish teacher and psychologist"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-[center_22%] sm:object-[center_18%]"
+          />
+          <div
+            className="absolute inset-0 bg-gradient-to-r from-[#f6f2eb] via-[#f6f2eb]/88 to-[#f6f2eb]/25 sm:via-[#f6f2eb]/78 sm:to-transparent"
+            aria-hidden
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#f6f2eb]/90 via-transparent to-[#f6f2eb]/40 sm:from-[#f6f2eb]/70 sm:to-transparent" aria-hidden />
 
-            <div className="animate-fade-up-delay-1 mt-8 flex max-w-5xl flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-              <p className="max-w-md text-base leading-relaxed text-[var(--foreground-secondary)] sm:text-lg">
-                Book a 1-on-1 lesson with Monica in seconds. Pick a time below—your Google
-                Calendar and Meet link sync automatically.
+          <div className="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-7xl flex-col justify-end px-4 pb-16 pt-28 sm:justify-center sm:px-8 sm:pb-24 sm:pt-32">
+            <div className="max-w-xl">
+              <p className="animate-fade-up font-[family-name:var(--font-display)] text-3xl font-semibold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+                Spanish with <span className="text-accent">Monica</span>
               </p>
-
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+              <h1 className="animate-fade-up-delay-1 mt-4 font-[family-name:var(--font-display)] text-4xl font-semibold leading-[1.08] tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+                Learn Spanish.{" "}
+                <span className="gradient-text">Live it.</span>
+              </h1>
+              <p className="animate-fade-up-delay-2 mt-5 max-w-md text-base leading-relaxed text-[var(--foreground-secondary)] sm:text-lg">
+                ¡Hola! I&apos;m Mónica, psychologist, Spanish teacher, and lifelong
+                learner. Personalized lessons that feel natural, from A1 to C1.
+              </p>
+              <div className="animate-fade-up-delay-3 mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
                 <a
                   href="#booking"
                   className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[var(--accent-deep)]"
@@ -531,28 +584,30 @@ export default function Home() {
                   <ArrowRight className="h-4 w-4" aria-hidden />
                 </a>
                 <a
-                  href="#packages"
-                  className="inline-flex items-center justify-center rounded-full border border-[var(--border)] bg-white/70 px-6 py-3.5 text-sm font-semibold text-foreground transition hover:border-accent/40"
+                  href="#about"
+                  className="inline-flex items-center justify-center rounded-full border border-[var(--border)] bg-white/70 px-6 py-3.5 text-sm font-semibold text-foreground backdrop-blur-sm transition hover:border-accent/40"
                 >
-                  View Packages
+                  Meet Mónica
                 </a>
               </div>
             </div>
-
-            <ul className="animate-fade-up-delay-2 mt-12 flex flex-col gap-4 border-t border-[var(--border)] pt-8 sm:flex-row sm:flex-wrap sm:gap-x-10">
-              {TRUST_BADGES.map(({ icon: Icon, label }) => (
-                <li
-                  key={label}
-                  className="flex items-center gap-3 text-sm font-medium text-[var(--foreground-secondary)]"
-                >
-                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[var(--accent-soft)] text-accent">
-                    <Icon className="h-4 w-4" aria-hidden />
-                  </span>
-                  {label}
-                </li>
-              ))}
-            </ul>
           </div>
+        </section>
+
+        <section className="border-t border-[var(--border)] px-4 py-10 sm:px-8">
+          <ul className="mx-auto flex max-w-7xl flex-col gap-4 sm:flex-row sm:flex-wrap sm:gap-x-10">
+            {TRUST_BADGES.map(({ icon: Icon, label }) => (
+              <li
+                key={label}
+                className="flex items-center gap-3 text-sm font-medium text-[var(--foreground-secondary)]"
+              >
+                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[var(--accent-soft)] text-accent">
+                  <Icon className="h-4 w-4" aria-hidden />
+                </span>
+                {label}
+              </li>
+            ))}
+          </ul>
         </section>
 
         <section id="booking" className="scroll-mt-24 px-4 pb-28 sm:px-8 sm:pb-32">
@@ -566,8 +621,8 @@ export default function Home() {
               link automatically.
             </p>
             <p className="mt-4 max-w-2xl rounded-2xl border border-[var(--border)] bg-white/60 px-4 py-3 text-sm leading-relaxed text-[var(--foreground-secondary)]">
-              After you book, Monica will confirm on WhatsApp. Payment is by transfer or
-              in person—nothing is charged online.
+              After you book, I&apos;ll confirm on WhatsApp. Payment is by transfer or
+              in person. Nothing is charged online.
             </p>
 
             <div className="soft-card mt-10 overflow-visible rounded-[2rem] p-2 sm:p-3">
@@ -579,38 +634,92 @@ export default function Home() {
         </section>
 
         <section id="about" className="scroll-mt-24 px-4 py-16 sm:px-8 sm:py-24">
-          <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
-            <div>
-              <SectionLabel>About</SectionLabel>
-              <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
-                Structured Spanish.
-                <br />
-                Human conversation.
-              </h2>
+          <div className="mx-auto grid max-w-7xl items-start gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
+            <div className="relative mx-auto aspect-[3/4] w-full max-w-md overflow-hidden rounded-[2rem] lg:mx-0">
+              <Image
+                src={`${BASE_PATH}/monica.jpg`}
+                alt="Mónica smiling outdoors"
+                fill
+                sizes="(max-width: 1024px) 90vw, 380px"
+                className="scale-130 object-cover object-[center_20%]"
+              />
             </div>
             <div>
-              <p className="text-lg leading-relaxed text-[var(--foreground-secondary)]">
-                ¡Hola! I&apos;m Monica. I help English speakers move from A1 to C1 with
-                conversation-first lessons—grammar when you need it, always tied to real
-                speaking goals.
+              <SectionLabel>About me</SectionLabel>
+              <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
+                Spanish, naturally.
+              </h2>
+              <p className="mt-3 text-lg font-medium text-accent">
+                Psychologist. Spanish teacher. Lifelong learner.
+              </p>
+              <p className="mt-6 text-lg leading-relaxed text-[var(--foreground-secondary)]">
+                ¡Hola! I&apos;m Mónica. I create personalized Spanish lessons that feel
+                natural, practical, and connected to real life, whether you&apos;re beginning
+                your journey or looking to speak with more confidence and ease.
+              </p>
+              <p className="mt-4 text-lg leading-relaxed text-[var(--foreground-secondary)]">
+                With a background in educational psychology and learning processes, I
+                design lessons around the way you learn best. Language is more than
+                grammar. It&apos;s a way of connecting, exploring, and experiencing the world.
               </p>
 
-              <ul className="mt-8 grid gap-4 sm:grid-cols-3">
+              <ul className="mt-10 space-y-4">
                 {[
-                  { icon: MessageCircle, title: "Speak first", body: "Real dialogue from minute one" },
-                  { icon: BookOpen, title: "Level-aligned", body: "Mapped to A1–C1 goals" },
-                  { icon: Sparkles, title: "Clear progress", body: "You always know what’s next" },
+                  {
+                    icon: Heart,
+                    title: "Built around how you learn",
+                    body: "Educational psychology informs every lesson, so practice sticks.",
+                  },
+                  {
+                    icon: MessageCircle,
+                    title: "Conversation that feels real",
+                    body: "Speak from minute one; grammar shows up when it helps you.",
+                  },
+                  {
+                    icon: Sparkles,
+                    title: "From A1 to C1",
+                    body: "Clear CEFR goals so you always know what “next level” means.",
+                  },
                 ].map(({ icon: Icon, title, body }) => (
-                  <li key={title} className="rounded-3xl border border-[var(--border)] bg-white/50 p-5">
-                    <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[var(--accent-soft)] text-accent">
+                  <li key={title} className="flex gap-4">
+                    <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--accent-soft)] text-accent">
                       <Icon className="h-4 w-4" aria-hidden />
                     </span>
-                    <p className="mt-4 font-semibold text-foreground">{title}</p>
-                    <p className="mt-1 text-sm text-[var(--foreground-muted)]">{body}</p>
+                    <div>
+                      <p className="font-semibold text-foreground">{title}</p>
+                      <p className="mt-1 text-sm text-[var(--foreground-muted)]">{body}</p>
+                    </div>
                   </li>
                 ))}
               </ul>
             </div>
+          </div>
+        </section>
+
+        <section id="how" className="scroll-mt-24 px-4 py-16 sm:px-8 sm:py-24">
+          <div className="mx-auto max-w-7xl">
+            <SectionLabel>How lessons work</SectionLabel>
+            <h2 className="mt-4 max-w-2xl font-[family-name:var(--font-display)] text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
+              What an hour with me looks like.
+            </h2>
+            <p className="mt-5 max-w-2xl text-lg text-[var(--foreground-secondary)]">
+              Simple, personal, and focused on speaking, so Spanish becomes something you
+              live, not only study.
+            </p>
+
+            <ol className="mt-14 grid gap-10 sm:grid-cols-3 sm:gap-8">
+              {LESSON_STEPS.map((item) => (
+                <li key={item.step}>
+                  <p className="font-[family-name:var(--font-display)] text-4xl font-semibold text-accent/40">
+                    {item.step}
+                  </p>
+                  <h3 className="mt-3 text-xl font-semibold text-foreground">{item.title}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-[var(--foreground-secondary)] sm:text-base">
+                    {item.body}
+                  </p>
+                </li>
+              ))}
+            </ol>
           </div>
         </section>
 
@@ -621,7 +730,7 @@ export default function Home() {
               Official CEFR path. A1 to C1.
             </h2>
             <p className="mt-5 max-w-2xl text-lg text-[var(--foreground-secondary)]">
-              CEFR stands for the Common European Framework of Reference for Languages—
+              CEFR stands for the Common European Framework of Reference for Languages,
               the same scale used by schools, employers, and official exams worldwide,
               turned into practical 1-on-1 lessons.
             </p>
@@ -654,8 +763,8 @@ export default function Home() {
               Try a few level-based questions.
             </h2>
             <p className="mt-5 text-lg text-[var(--foreground-secondary)]">
-              Five quick choices from A1 to B1. No account—just a taste of the Spanish
-              Monica teaches in real lessons.
+              Five quick choices from A1 to B1. No account needed, just a taste of the Spanish
+              I teach in real lessons.
             </p>
             <div className="mt-12">
               <PracticeGame />
@@ -670,10 +779,11 @@ export default function Home() {
               Simple pricing. Clear next steps.
             </h2>
             <p className="mt-5 max-w-2xl text-lg text-[var(--foreground-secondary)]">
-              Book one lesson anytime, or save with a pack of five—prices in Mexican pesos.
+              Book one lesson anytime, or save with a pack of five or ten. Prices in Mexican
+              pesos.
             </p>
 
-            <div className="mt-14 grid gap-4 lg:grid-cols-2 lg:max-w-4xl">
+            <div className="mt-14 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {PACKAGES.map((pkg) => (
                 <article
                   key={pkg.name}
@@ -683,11 +793,13 @@ export default function Home() {
                       : "soft-card"
                   }`}
                 >
-                  {pkg.highlighted && (
-                    <span className="mb-4 inline-flex w-fit rounded-full bg-white/20 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
-                      Best value
-                    </span>
-                  )}
+                  <div className="mb-4 min-h-[1.75rem]">
+                    {pkg.highlighted && (
+                      <span className="inline-flex w-fit rounded-full bg-white/20 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
+                        Best value
+                      </span>
+                    )}
+                  </div>
                   <div
                     className={`flex items-center gap-2 text-sm ${
                       pkg.highlighted ? "text-white/75" : "text-[var(--foreground-muted)]"
@@ -797,8 +909,8 @@ export default function Home() {
               Spanish with <span className="text-accent">Monica</span>
             </p>
             <p className="mt-3 max-w-sm text-sm leading-relaxed text-[var(--foreground-muted)]">
-              Standard Spanish for English speakers—structured by CEFR levels A1–C1, with
-              real conversation at the center.
+              Personalized Spanish with Mónica, psychologist, teacher, and lifelong learner.
+              Lessons that feel natural, from A1 to C1.
             </p>
             <div className="mt-5 flex flex-col gap-3">
               <a
