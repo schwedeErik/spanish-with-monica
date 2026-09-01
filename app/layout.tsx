@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     url: "https://schwedeerik.github.io/spanish-with-monica/",
     images: [
       {
-        url: "https://schwedeerik.github.io/spanish-with-monica/og.jpg?v=6",
+        url: "https://schwedeerik.github.io/spanish-with-monica/og.jpg?v=8",
         width: 1200,
         height: 630,
         alt: "Spanish with Monica, Learn Spanish. Live it.",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     title: "Spanish with Monica | Learn Spanish. Live it.",
     description:
       "Personalized Spanish with Mónica, psychologist, teacher, and lifelong learner. Book a lesson and start speaking with confidence.",
-    images: ["https://schwedeerik.github.io/spanish-with-monica/og.jpg?v=6"],
+    images: ["https://schwedeerik.github.io/spanish-with-monica/og.jpg?v=8"],
   },
 };
 
